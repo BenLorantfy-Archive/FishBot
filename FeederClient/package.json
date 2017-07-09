@@ -1,0 +1,15 @@
+{
+  "name": "feeder-client",
+  "version": "1.0.0",
+  "description": "Client that runs on the rasberry pi and recieves requests to feed fish",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "johnny-five": "^0.11.3",
+    "serialport": "^4.0.7"
+  }
+}

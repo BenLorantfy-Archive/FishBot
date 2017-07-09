@@ -1,0 +1,14 @@
+{
+  "name": "stream-server",
+  "version": "1.0.0",
+  "description": "Runs on a cloud VM",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ben Lorantfy",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^3.0.0"
+  }
+}

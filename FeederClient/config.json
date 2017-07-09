@@ -1,0 +1,5 @@
+{
+    "serverUrl": "http://localhost:5000/",
+    "key": "security_key",
+    "serialPort": "/dev/cu.usbmodem217"
+}

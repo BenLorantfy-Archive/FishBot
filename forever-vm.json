@@ -1,0 +1,21 @@
+// This is the configuration file for forever, an npm module that is used to start and monitor
+//  all the different apps. Each object is the configuration for an app.
+
+[
+  {
+    // Api Server
+    "uid": "FishBotApiServer",
+    "append": true,
+    "watch": true,
+    "script": "app.js",
+    "sourceDir": "/root/fishbot/ApiServer"
+  },
+  {
+    // Streams webcam feed
+    "uid": "FishBotStreamServer",
+    "append": true,
+    "watch": true,
+    "script": "app.js",
+    "sourceDir": "/root/fishbot/StreamServer"
+  }
+]

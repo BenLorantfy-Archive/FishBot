@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- The first thing in any HTML file should be the charset -->
+    <meta charset="utf-8">
+    <!-- Make the page mobile compatible -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Allow installing the app to the homescreen -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Ben Lorantfy</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tachyons/4.7.2/tachyons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,400" rel="stylesheet">
+
+    <style>
+.react-3d-carousel {
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+}
+.react-3d-carousel figure {
+  margin: 0;
+  transition: all 0.5s;
+}
+
+.react-3d-carousel {
+    width: 400px;
+    height: 300px;
+    position: relative;
+    perspective: 1000px;
+}
+
+.react-3d-carousel .carousel {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform-style: preserve-3d;
+}
+
+.react-3d-carousel .carousel  figure {
+    display: block;
+    position: absolute;
+    width: 400px;
+    height: 300px;
+    left: 10px;
+    top: 10px;
+    border: 2px solid black;
+    line-height: 116px;
+    font-size: 80px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+
+.react-3d-carousel .carousel figure {
+    background: hsla( 160, 100%, 50%, 0.8);
+}
+
+.react-3d-carousel table {
+    position: absolute;
+    top: 400px;
+    width: 400px;
+}
+
+.react-3d-carousel   .prev {
+    position: absolute;
+    height: 100%;
+    width: 15%;
+    top: 0px;
+    left: 0px;
+}
+
+.react-3d-carousel   .prev:before {
+    content: url("https://s3.postimg.org/o6xpvkidb/chevron-left_white.png");
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 43px;
+    height: 49px;
+    margin: auto;
+}
+
+.react-3d-carousel  .next {
+    position: absolute;
+    height: 100%;
+    width: 15%;
+    top: 0px;
+    right: -5px;
+}
+.react-3d-carousel  .next:before
+{
+    content: url("https://s2.postimg.org/l0n6eaoad/chevron-right_white.png");
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 43px;
+    height: 49px;
+    margin: auto;
+}
+    </style>
+  </head>
+  <body>
+    <!-- Display a message if JS has been disabled on the browser. -->
+    <noscript>If you're seeing this message, that means <strong>JavaScript has been disabled on your browser</strong>, please <strong>enable JS</strong> to make this app work.</noscript>
+
+    <!-- The app hooks into this div -->
+    <div id="app"></div>
+    <!-- A lot of magic happens in this file. HtmlWebpackPlugin automatically includes all assets (e.g. bundle.js, main.css) with the correct HTML tags, which is why they are missing in this HTML file. Don't add any assets here! (Check out webpackconfig.js if you want to know more) -->
+  </body>
+</html>
