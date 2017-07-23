@@ -1,8 +1,6 @@
 /*
- * Hello World!
+ * ArdunioClient
  *
- * This is the Hello World! for Arduino. 
- * It shows how to send data to the computer
  */
 int forward = 0;
 int onPin = -1;
@@ -12,9 +10,9 @@ String command = "";
 
 void setup()                    // run once, when the sketch starts
 {
-  Serial.begin(57600);           // set up Serial library at 9600 bps
+  Serial.begin(57600);           // set up Serial library at 57600 bps
   
-  Serial.println("ready-for-commands");  // prints hello with ending line break 
+  Serial.println("ready-for-commands");  
 
   // Initilize all the pins
   for(int i = 0; i < 4; i++){
@@ -22,7 +20,7 @@ void setup()                    // run once, when the sketch starts
   }
 }
 
-void loop()                       // run over and over again
+void loop()                       
 {
   if (Serial.available() > 0) {
     String recievedCommand = Serial.readStringUntil('\n');

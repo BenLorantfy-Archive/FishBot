@@ -9,24 +9,31 @@ import * as constants from './constants';
 
 const initialState = fromJS({
   //  projects: []
-  loading: false
+  loading: false,
+
+  // Timestamp indicating when the last update was recieved
+  lastUpdate: null,
+
+  // Last fed time
+  lastFed: null,
+
+  // Next time when fish is hungry
+  hungryTime: null,
 });
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    // case constants.LOAD_PROJECTS_REQUESTED:
-    //   return state.merge({
-    //     loading: true,
-    //   });
-    // case constants.LOAD_PROJECTS_SUCCEEDED:
-    //   return state.merge({
-    //     loading: false,
-    //     projects: action.projects,
-    //   });
-    // case constants.LOAD_PROJECTS_FAILED:
-    //   return state.merge({
-    //     loading: false,
-    //   });
+    case constants.RECIEVED_UPDATE:
+      if(!state.lastUpdate || state.lastUpdate < action.data.timeSent){
+        if(action.event === "updated-last-fed"){
+          return state
+            .set("lastUpdate", action.data.timeSent)
+            .set("lastFed", action.data.lastFed)
+            .set("hungryTime", action.data.hungryTime);
+        }
+      }
+
+      return state;
     default:
       return state;
   }

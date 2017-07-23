@@ -15,6 +15,7 @@ import * as styles from './styles';
 import moment from 'moment';
 import RaisedButton from 'material-ui/RaisedButton';
 import StreamFeed from '../../components/StreamFeed';
+import io from 'socket.io-client';
 
 // @import "~slick-carousel/slick/slick.css";
 // @import "~slick-carousel/slick/slick-theme.css";
@@ -32,13 +33,32 @@ export class IndexPage extends React.Component { // eslint-disable-line react/pr
       this.updateTimeUntilHungry();
     },1000);
     this.updateTimeUntilHungry();
+
+    const socket = io("https://benlorantfy.com/", { transports: ['websocket'], upgrade: false, path: '/fishbot/updates' });
+    socket.on('connect', () => {
+      console.log("Connected to server");
+    });
+
+    socket.on('message', (event, data) => {
+      this.props.recievedUpdate(event, data);
+    });
   }
 
   updateTimeUntilHungry(){
     this.setState((prevState, props) => {
-      const timeWhenHungryAgain = "2017-07-06T00:40:17.119Z";
+      if(props.hungryTime == null){
+        return { time: "in ..." };
+      }
+      if(props.hungryTime < moment().toISOString()){
+        return { time: "now" };
+      }
+
+      const timeWhenHungryAgain = props.hungryTime;
       const now = moment();
       let time = now.to(timeWhenHungryAgain);
+      if(time === "in a day"){
+        time = "in " + moment(timeWhenHungryAgain).diff(now, "hours") + " hours";
+      }
       if(time === "in a few seconds"){
         time = "in " + moment(timeWhenHungryAgain).diff(now, "seconds") + " seconds";
       }
@@ -47,7 +67,7 @@ export class IndexPage extends React.Component { // eslint-disable-line react/pr
   }
 
   render() {
-    const isDisabled = false;
+    const isDisabled = this.props.lastUpdate === null || this.props.hungryTime > moment().toISOString();
     return (
       <div>
         <div style={styles.container}>
@@ -59,7 +79,9 @@ export class IndexPage extends React.Component { // eslint-disable-line react/pr
             label="Feed Leroy" 
             style={{ marginRight: "15px" }} 
             disabled={isDisabled} /> 
-          Leroy isn't hungry right now. He'll be hungry {this.state.time}
+          
+          {isDisabled && <span>Leroy isn't hungry right now. He'll be hungry {this.state.time}</span>}
+          
 
         </div>
       </div>
@@ -74,10 +96,14 @@ IndexPage.propTypes = {
 const mapStateToProps = createStructuredSelector({
   // projects: selectors.selectProjects(),
   // loading: selectors.selectLoading(),
+  lastUpdate: selectors.selectLastUpdate(),
+  lastFed: selectors.selectLastFed(),
+  hungryTime: selectors.selectHungryTime(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    recievedUpdate: (event, data) => dispatch(actions.recievedUpdate(event, data)),
     feedFish: () => dispatch(actions.feedFish()),
     dispatch,
   };

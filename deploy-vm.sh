@@ -42,11 +42,27 @@ echo "${PURPLE}[deploy.sh]${NC}  8.  Install dependencies for node api"
 echo "${PURPLE}[deploy.sh]${NC}  9.  Start node api using forever"
 echo "${PURPLE}[deploy.sh]${NC} ${BLUE}============================================${NC}"
 
+# Provide the --skip-front-build option to skip the frontend build
+SKIP_FRONT_END_BUILD=0
+while getopts ":-:" opt; do
+    case ${opt} in
+        -)
+            case ${OPTARG} in
+                "skip-front-build"*) echo "${PURPLE}[deploy.sh]${NC} Skipping frontend build becuase of --skip-front-build"
+                     SKIP_FRONT_END_BUILD=1
+                    ;;
+            esac
+    esac
+done
+
 # BUILD REACT APP
-echo "${PURPLE}[deploy.sh]${NC} Building react app..."
-cd ./WebClient
-npm run build
-cd ../
+if [ $SKIP_FRONT_END_BUILD -eq 0 ]
+then
+    echo "${PURPLE}[deploy.sh]${NC} Building react app..."
+    cd ./WebClient
+    npm run build
+    cd ../
+fi
 
 # DELETE OLD FILES
 echo "${PURPLE}[deploy.sh]${NC} Deleting old files..."

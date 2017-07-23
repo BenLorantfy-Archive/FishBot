@@ -1,25 +1,25 @@
 import { createSelector } from 'reselect';
 
-/**
- * Direct selector to the blogSection state domain
- */
-const selectDomain = () => (state) => state.get('index');
 
-/**
- * Other specific selectors
- */
+const selectState = () => (state) => state.get('index').toJS();
 
+export const selectLastFed = () => createSelector(
+    selectState(),
+    (state) => {
+        return state.lastFed;
+    }
+);
 
-/**
- * Default selector used by BlogSection
- */
+export const selectHungryTime = () => createSelector(
+    selectState(),
+    (state) => {
+        return state.hungryTime;
+    }
+);
 
-// export const selectProjects = () => createSelector(
-//   selectProjectsSectionDomain(),
-//   (substate) => substate.get("projects").toJS()
-// );
-
-// export const selectLoading = () => createSelector(
-//   selectProjectsSectionDomain(),
-//   (substate) => substate.get("loading")
-// );
+export const selectLastUpdate = () => createSelector(
+    selectState(),
+    (state) => {
+        return state.lastUpdate;
+    }
+);

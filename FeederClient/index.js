@@ -24,30 +24,32 @@ stdin.addListener("data", function(d) {
 log("Connecting to FeederServer at " + config.serverUrl);
 var socket = io.connect(config.serverUrl, {
     reconnect: true,
-    query: { key: config.key }
+    query: { key: config.key },
+    transports: ['websocket'], 
+    upgrade: false, 
+    path: '/fishbot/updates'
 });
 
 // Add a connect listener
 socket.on('connect', function () {
     log("Established a valid connection to FeederServer");
+});
 
-    socket.on('feed', function (from, msg) {
-        log("Recieved request to feed...");
-        log("Sending feed command to board");
+socket.on('feed', function (from, msg) {
+    log("Recieved request to feed...");
+    log("Sending feed command to board");
 
-        port.write('feed\n', function(err) {
-            if (err) {
-                log('Error on write: ', err.message);
-                return;
-            }
-        });
+    port.write('feed\n', function(err) {
+        if (err) {
+            log('Error on write: ', err.message);
+            return;
+        }
     });
 });
 
 port.on('open', function() {
     log("Opened port to board...");
 });
-
 
 port.on('data', function (d) {
     const data = d.toString().trim();

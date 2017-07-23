@@ -1,5 +1,13 @@
 {
     "key": "y0:8-DbV|4TnC=4F>pCbi<_.IfFy`H",
     "websocketPort": 9000,
-    "apiPort": 9001
+    "apiPort": 9001,
+    "trustProxy": false,
+    "redis": {
+        "password": "<password>"
+    },
+    "mongo": {
+        "user": "<user>",
+        "password": "<password>"
+    }
 }
