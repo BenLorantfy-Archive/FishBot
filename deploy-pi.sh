@@ -49,27 +49,27 @@ echo "${PURPLE}[deploy.sh]${NC} Transfering new files..."
 rsync -av --exclude '.vscode' --exclude 'node_modules' --exclude '.git' --exclude '.github' ./FeederClient ${USER}@${IP}:~/fishbot
 echo "${PURPLE}[deploy.sh]${NC} ${GREEN}Transfered${NC} new files"
 
-# STOP ALL APPS
-echo "${PURPLE}[deploy.sh]${NC} Stopping forever scripts..."
-ssh root@${IP} 'forever stop FishBot' 
+# # STOP ALL APPS
+# echo "${PURPLE}[deploy.sh]${NC} Stopping forever scripts..."
+# ssh ${USER}@${IP} 'forever stop FishBot' 
 
-# INSTALL API DEPENDENCIES
-echo "${PURPLE}[deploy.sh]${NC} Installing node dependencies..."
-ssh root@${IP} 'cd "/root/fishbot/Server" && npm install --production'
-echo "${PURPLE}[deploy.sh]${NC} ${GREEN}Installed${NC} dependencies"
+# # INSTALL API DEPENDENCIES
+# echo "${PURPLE}[deploy.sh]${NC} Installing node dependencies..."
+# ssh ${USER}@${IP} 'cd "/root/fishbot/Server" && npm install --production'
+# echo "${PURPLE}[deploy.sh]${NC} ${GREEN}Installed${NC} dependencies"
 
-echo "${PURPLE}[deploy.sh]${NC} Pruning node dependencies..."
-ssh root@${IP} 'cd "/root/fishbot/Server" && npm prune --production'
-echo "${PURPLE}[deploy.sh]${NC} ${GREEN}Pruned${NC} node dependencies"
+# echo "${PURPLE}[deploy.sh]${NC} Pruning node dependencies..."
+# ssh ${USER}@${IP} 'cd "/root/fishbot/Server" && npm prune --production'
+# echo "${PURPLE}[deploy.sh]${NC} ${GREEN}Pruned${NC} node dependencies"
 
 
-# START ALL APPS
-# forever is used to manage and monitor all the apps
-# The forever configuration is read from forever.json
-echo "${PURPLE}[deploy.sh]${NC} Starting all apps using forever..."
-ssh root@${IP} 'forever start /root/fishbot/forever.json' 
-echo "${PURPLE}[deploy.sh]${NC} Listing all the started apps..."
-ssh root@${IP} 'forever list' 
+# # START ALL APPS
+# # forever is used to manage and monitor all the apps
+# # The forever configuration is read from forever.json
+# echo "${PURPLE}[deploy.sh]${NC} Starting all apps using forever..."
+# ssh ${USER}@${IP} 'forever start /root/fishbot/forever.json' 
+# echo "${PURPLE}[deploy.sh]${NC} Listing all the started apps..."
+# ssh ${USER}@${IP} 'forever list' 
 
 # DONE
 echo "${PURPLE}[deploy.sh]${NC} ${BLUE}=========================${NC}"
