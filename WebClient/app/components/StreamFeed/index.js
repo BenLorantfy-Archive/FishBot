@@ -9,7 +9,7 @@ import JSmpeg from 'jsmpeg';
 
 export class StreamFeed extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
-    const player = new JSmpeg.Player('wss://benlorantfy.com/fishbot/stream', {
+    JSmpeg.Player('wss://benlorantfy.com/fishbot/stream', {
       canvas: this.canvas,
     });
   }
@@ -23,5 +23,8 @@ export class StreamFeed extends React.Component { // eslint-disable-line react/p
   }
 }
 
+StreamFeed.propTypes = {
+  style: PropTypes.object,
+};
 
 export default StreamFeed;

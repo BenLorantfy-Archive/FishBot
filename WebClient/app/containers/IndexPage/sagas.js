@@ -1,13 +1,12 @@
-import { take, takeLatest, call, put, select } from 'redux-saga/effects';
+import { takeLatest, call } from 'redux-saga/effects';
 import * as constants from './constants';
-import * as actions from './actions';
+// import * as actions from './actions';
 import * as api from './api';
 
 // Individual exports for testing
-function* feedFish(action) {
-  console.log('Feeding Fish');
+function* feedFish() {
   try {
-    const response = yield call(api.feedFish);
+    yield call(api.feedFish);
     // yield put(actions.loadProjectsSucceeded(projects.items));
   } catch (e) {
     // yield put(actions.loadProjectsFailed());

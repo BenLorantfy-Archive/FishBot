@@ -7,15 +7,20 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import Spinner from 'react-spinkit';
+// import Spinner from 'react-spinkit';
 import { createStructuredSelector } from 'reselect';
+import moment from 'moment';
+import io from 'socket.io-client';
+
+/** material ui **/
+import RaisedButton from 'material-ui/RaisedButton';
+
+
 import * as selectors from './selectors';
 import * as actions from './actions';
 import * as styles from './styles';
-import moment from 'moment';
-import RaisedButton from 'material-ui/RaisedButton';
 import StreamFeed from '../../components/StreamFeed';
-import io from 'socket.io-client';
+
 
 // @import "~slick-carousel/slick/slick.css";
 // @import "~slick-carousel/slick/slick-theme.css";
@@ -36,7 +41,7 @@ export class IndexPage extends React.Component { // eslint-disable-line react/pr
 
     const socket = io('https://benlorantfy.com/', { transports: ['websocket'], upgrade: false, path: '/fishbot/updates' });
     socket.on('connect', () => {
-      console.log('Connected to server');
+      // console.log('Connected to server');
     });
 
     socket.on('message', (event, data) => {
@@ -70,6 +75,9 @@ export class IndexPage extends React.Component { // eslint-disable-line react/pr
     const isDisabled = this.props.lastUpdate === null || this.props.hungryTime > moment().toISOString();
     return (
       <div>
+        <Helmet>
+          <title>FishBot</title>
+        </Helmet>
         <div style={styles.container}>
           <h1 style={styles.header}>FishBot</h1>
           <h2 style={styles.subHeader}>An automatic fish feeder</h2>
@@ -81,7 +89,7 @@ export class IndexPage extends React.Component { // eslint-disable-line react/pr
             disabled={isDisabled}
           />
 
-          {isDisabled && <span>Leroy isn't hungry right now. He'll be hungry {this.state.time}</span>}
+          {isDisabled && <span>{`Leroy isn't hungry right now. He'll be hungry ${this.state.time}`}</span>}
 
 
         </div>
@@ -91,7 +99,10 @@ export class IndexPage extends React.Component { // eslint-disable-line react/pr
 }
 
 IndexPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  recievedUpdate: PropTypes.func.isRequired,
+  feedFish: PropTypes.func.isRequired,
+  lastUpdate: PropTypes.string.isRequired,
+  hungryTime: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -106,7 +117,6 @@ function mapDispatchToProps(dispatch) {
   return {
     recievedUpdate: (event, data) => dispatch(actions.recievedUpdate(event, data)),
     feedFish: () => dispatch(actions.feedFish()),
-    dispatch,
   };
 }
 
