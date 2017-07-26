@@ -23,6 +23,7 @@ jobs:
       # ===========================================
       - run: cd WebClient
       - run: pwd
+      - run: ls
 
       # Download and cache dependencies
       - restore_cache:
