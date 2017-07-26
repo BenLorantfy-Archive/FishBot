@@ -1,0 +1,10 @@
+{
+  "name": "fish-bot",
+  "version": "1.0.0",
+  "description": "Fishbot",
+  "scripts": {
+    "test": "sh test.sh"
+  },
+  "author": "Ben Lorantfy",
+  "license": "MIT"
+}

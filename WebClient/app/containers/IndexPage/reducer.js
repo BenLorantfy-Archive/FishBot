@@ -24,12 +24,12 @@ const initialState = fromJS({
 function reducer(state = initialState, action) {
   switch (action.type) {
     case constants.RECIEVED_UPDATE:
-      if(!state.lastUpdate || state.lastUpdate < action.data.timeSent){
-        if(action.event === "updated-last-fed"){
+      if (!state.lastUpdate || state.lastUpdate < action.data.timeSent) {
+        if (action.event === 'updated-last-fed') {
           return state
-            .set("lastUpdate", action.data.timeSent)
-            .set("lastFed", action.data.lastFed)
-            .set("hungryTime", action.data.hungryTime);
+            .set('lastUpdate', action.data.timeSent)
+            .set('lastFed', action.data.lastFed)
+            .set('hungryTime', action.data.hungryTime);
         }
       }
 

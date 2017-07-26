@@ -37,6 +37,6 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-    }
+    },
   ];
 }

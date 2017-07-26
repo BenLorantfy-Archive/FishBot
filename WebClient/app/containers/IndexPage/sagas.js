@@ -5,17 +5,16 @@ import * as api from './api';
 
 // Individual exports for testing
 function* feedFish(action) {
-  console.log("Feeding Fish");
-  try{
-    var response = yield call(api.feedFish);
+  console.log('Feeding Fish');
+  try {
+    const response = yield call(api.feedFish);
     // yield put(actions.loadProjectsSucceeded(projects.items));
-  }catch(e){
+  } catch (e) {
     // yield put(actions.loadProjectsFailed());
   }
 }
 
-function* listener(){
-  console.log("YOOO");
+function* listener() {
   yield takeLatest(constants.FEED_FISH_REQUESTED, feedFish);
 }
 

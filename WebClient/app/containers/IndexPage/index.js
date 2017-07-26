@@ -24,19 +24,19 @@ export class IndexPage extends React.Component { // eslint-disable-line react/pr
   constructor(props) {
     super(props);
     this.state = {
-      timer: "",
+      timer: '',
     };
   }
 
-  componentWillMount(){
+  componentWillMount() {
     setInterval(() => {
       this.updateTimeUntilHungry();
-    },1000);
+    }, 1000);
     this.updateTimeUntilHungry();
 
-    const socket = io("https://benlorantfy.com/", { transports: ['websocket'], upgrade: false, path: '/fishbot/updates' });
+    const socket = io('https://benlorantfy.com/', { transports: ['websocket'], upgrade: false, path: '/fishbot/updates' });
     socket.on('connect', () => {
-      console.log("Connected to server");
+      console.log('Connected to server');
     });
 
     socket.on('message', (event, data) => {
@@ -44,23 +44,23 @@ export class IndexPage extends React.Component { // eslint-disable-line react/pr
     });
   }
 
-  updateTimeUntilHungry(){
+  updateTimeUntilHungry() {
     this.setState((prevState, props) => {
-      if(props.hungryTime == null){
-        return { time: "in ..." };
+      if (props.hungryTime == null) {
+        return { time: 'in ...' };
       }
-      if(props.hungryTime < moment().toISOString()){
-        return { time: "now" };
+      if (props.hungryTime < moment().toISOString()) {
+        return { time: 'now' };
       }
 
       const timeWhenHungryAgain = props.hungryTime;
       const now = moment();
       let time = now.to(timeWhenHungryAgain);
-      if(time === "in a day"){
-        time = "in " + moment(timeWhenHungryAgain).diff(now, "hours") + " hours";
+      if (time === 'in a day') {
+        time = `in ${moment(timeWhenHungryAgain).diff(now, 'hours')} hours`;
       }
-      if(time === "in a few seconds"){
-        time = "in " + moment(timeWhenHungryAgain).diff(now, "seconds") + " seconds";
+      if (time === 'in a few seconds') {
+        time = `in ${moment(timeWhenHungryAgain).diff(now, 'seconds')} seconds`;
       }
       return { time };
     });
@@ -73,15 +73,16 @@ export class IndexPage extends React.Component { // eslint-disable-line react/pr
         <div style={styles.container}>
           <h1 style={styles.header}>FishBot</h1>
           <h2 style={styles.subHeader}>An automatic fish feeder</h2>
-          <StreamFeed style={{ marginBottom: "20px" }} />
-          <RaisedButton 
-            onTouchTap={this.props.feedFish} 
-            label="Feed Leroy" 
-            style={{ marginRight: "15px" }} 
-            disabled={isDisabled} /> 
-          
+          <StreamFeed style={{ marginBottom: '20px' }} />
+          <RaisedButton
+            onTouchTap={this.props.feedFish}
+            label="Feed Leroy"
+            style={{ marginRight: '15px' }}
+            disabled={isDisabled}
+          />
+
           {isDisabled && <span>Leroy isn't hungry right now. He'll be hungry {this.state.time}</span>}
-          
+
 
         </div>
       </div>
