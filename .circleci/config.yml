@@ -21,7 +21,7 @@ jobs:
 
       # WebClient
       # ===========================================
-      - run: cd WebClient
+      - run: cd ./WebClient
       - run: pwd
       - run: ls
 
