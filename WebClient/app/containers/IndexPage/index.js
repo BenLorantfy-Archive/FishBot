@@ -14,7 +14,14 @@ import io from 'socket.io-client';
 
 /** material ui **/
 import RaisedButton from 'material-ui/RaisedButton';
-
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
 
 import * as selectors from './selectors';
 import * as actions from './actions';
@@ -35,9 +42,9 @@ export class IndexPage extends React.Component { // eslint-disable-line react/pr
 
   componentWillMount() {
     setInterval(() => {
-      this.updateTimeUntilHungry();
+      this.updateTimes();
     }, 1000);
-    this.updateTimeUntilHungry();
+    this.updateTimes();
 
     const socket = io('https://benlorantfy.com/', { transports: ['websocket'], upgrade: false, path: '/fishbot/updates' });
     socket.on('connect', () => {
@@ -47,15 +54,18 @@ export class IndexPage extends React.Component { // eslint-disable-line react/pr
     socket.on('message', (event, data) => {
       this.props.recievedUpdate(event, data);
     });
+
+    // Fetch feeds
+    this.props.loadFeeds();
   }
 
-  updateTimeUntilHungry() {
+  updateTimes() {
     this.setState((prevState, props) => {
       if (props.hungryTime == null) {
-        return { time: 'in ...' };
+        return Object.assign({}, prevState, { time: 'in ...' });
       }
       if (props.hungryTime < moment().toISOString()) {
-        return { time: 'now' };
+        return Object.assign({}, prevState, { time: 'now' });
       }
 
       const timeWhenHungryAgain = props.hungryTime;
@@ -67,7 +77,11 @@ export class IndexPage extends React.Component { // eslint-disable-line react/pr
       if (time === 'in a few seconds') {
         time = `in ${moment(timeWhenHungryAgain).diff(now, 'seconds')} seconds`;
       }
-      return { time };
+      return Object.assign({}, prevState, { time });
+    });
+
+    this.setState((prevState, props) => {
+      return Object.assign({}, prevState, { now: moment().toISOString() });
     });
   }
 
@@ -93,6 +107,35 @@ export class IndexPage extends React.Component { // eslint-disable-line react/pr
 
 
         </div>
+        <div style={styles.container}>
+          <h1 style={styles.header3}>Recent Feedings</h1>
+          
+          <Table>
+            <TableHeader
+              displaySelectAll={false}
+              adjustForCheckbox={false}
+            >
+              <TableRow>
+                <TableHeaderColumn>ID</TableHeaderColumn>
+                <TableHeaderColumn>Relative Time</TableHeaderColumn>
+                <TableHeaderColumn>Absolute Time</TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody
+              displayRowCheckbox={false}
+            >
+              {this.props.feeds.map((feed, i) => {
+                return <TableRow key={i}>
+                  <TableRowColumn>{i}</TableRowColumn>
+                  <TableRowColumn>{moment(feed.time).from(this.state.now)}</TableRowColumn>
+                  <TableRowColumn>{moment(feed.time).format('MMMM Do YYYY, h:mm:ss a')}</TableRowColumn>
+                </TableRow>
+              })}
+            </TableBody>
+          </Table>
+
+
+        </div>
       </div>
     );
   }
@@ -101,22 +144,22 @@ export class IndexPage extends React.Component { // eslint-disable-line react/pr
 IndexPage.propTypes = {
   recievedUpdate: PropTypes.func.isRequired,
   feedFish: PropTypes.func.isRequired,
-  lastUpdate: PropTypes.string.isRequired,
-  hungryTime: PropTypes.string.isRequired,
+  lastUpdate: PropTypes.string,
+  hungryTime: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
-  // projects: selectors.selectProjects(),
-  // loading: selectors.selectLoading(),
   lastUpdate: selectors.selectLastUpdate(),
   lastFed: selectors.selectLastFed(),
   hungryTime: selectors.selectHungryTime(),
+  feeds: selectors.selectFeeds(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     recievedUpdate: (event, data) => dispatch(actions.recievedUpdate(event, data)),
     feedFish: () => dispatch(actions.feedFish()),
+    loadFeeds: () => dispatch(actions.loadFeeds()),
   };
 }
 

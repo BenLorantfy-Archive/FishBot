@@ -8,6 +8,7 @@
     },
     "mongo": {
         "user": "<user>",
-        "password": "<password>"
+        "password": "<password>",
+        "auth": false
     }
 }

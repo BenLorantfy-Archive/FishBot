@@ -17,3 +17,8 @@ export const selectLastUpdate = () => createSelector(
     selectState(),
     (state) => state.lastUpdate
 );
+
+export const selectFeeds = () => createSelector(
+    selectState(),
+    (state) => state.feeds.data
+);

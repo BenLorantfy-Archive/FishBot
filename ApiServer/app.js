@@ -21,14 +21,26 @@ bluebird.promisifyAll(Redis.Multi.prototype);
 redis = Redis.createClient({ password: config.redis.password });
 
 // Connect to mongo
-Mongo.connect(`mongodb://${config.mongo.user}:${config.mongo.password}@localhost:27017/fishbot`,function(err, db) {
-  if(err === null){
-    console.log("Connected successfully to mongo db");
-    mongo = db;
-  }else{
-    console.log("Failed to connect to mongo: ", err);
-  }
-});
+if(config.mongo.auth){
+    Mongo.connect(`mongodb://${config.mongo.user}:${config.mongo.password}@localhost:27017/fishbot`,function(err, db) {
+        if(err === null){
+            console.log("Connected successfully to mongo db");
+            mongo = db;
+        }else{
+            console.log("Failed to connect to mongo: ", err);
+        }
+    });
+}else{
+    Mongo.connect(`mongodb://localhost:27017/fishbot`,function(err, db) {
+        if(err === null){
+            console.log("Connected successfully to mongo db");
+            mongo = db;
+        }else{
+            console.log("Failed to connect to mongo: ", err);
+        }
+    });
+}
+
 
 // Get's the lastFed time
 let lastFedISO = null;
@@ -158,21 +170,19 @@ app.get("/api", function(req,res){
 
 app.get("/api/feeds", function(req, res){ 
     const oneMonthAgo = moment().clone().subtract(1, "month").toISOString();
-    mongo.collection("feeds").find({
+    mongo.collection("feeds")
+    .find({
         time: { $gt: oneMonthAgo }
     },{
         time: 1
-    },function(err, cursor){
+    })
+    .sort({ time: -1 })
+    .toArray(function(err, results){
         if(err){
             return res.end("failed");
         }
         
-        // toArary returns a promise that resolves to an array
-        cursor.toArray().then((results) => {
-            return res.json(results);
-        }).catch(() => {
-            return res.end("failed");
-        })
+        return res.json(results);
     });
 });
 

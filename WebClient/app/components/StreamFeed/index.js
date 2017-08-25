@@ -9,9 +9,14 @@ import JSmpeg from 'jsmpeg';
 
 export class StreamFeed extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
-    JSmpeg.Player('wss://benlorantfy.com/fishbot/stream', {
-      canvas: this.canvas,
-    });
+    try{
+      JSmpeg.Player('wss://benlorantfy.com/fishbot/stream', {
+        canvas: this.canvas,
+      });
+    }catch(e){
+
+    }
+
   }
 
   render() {

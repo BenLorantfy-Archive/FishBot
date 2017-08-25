@@ -23,3 +23,14 @@ export const subHeader = {
   color: 'grey',
   fontWeight: 100,
 };
+
+export const header3 = {
+  marginTop: '0',
+  marginBottom: '10px',
+  textAlign: 'left',
+  color: 'grey',
+  fontWeight: 300,
+  fontSize: 20,
+  borderBottom: '1px solid lightgrey',
+  paddingBottom: '4px',
+};
